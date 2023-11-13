@@ -2,7 +2,6 @@ package main
 
 import (
 	"html/template"
-	"net/http"
 	"path/filepath"
 	"time"
 
@@ -16,6 +15,7 @@ type templateData struct {
 	Form            any
 	Flash           string
 	IsAuthenticated bool
+	CSRFToken       string
 }
 
 func humanDate(t time.Time) string {
@@ -51,8 +51,4 @@ func newTemplateCache() (map[string]*template.Template, error) {
 		cache[name] = ts
 	}
 	return cache, nil
-}
-
-func (app *application) newTemplateData(r *http.Request) *templateData {
-	return &templateData{CurrentYear: time.Now().Year(), Flash: app.sessionManager.PopString(r.Context(), "flash"), IsAuthenticated: app.isAuthenticated(r)}
 }
